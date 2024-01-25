@@ -1,42 +1,47 @@
+// usage: node pdf-parser-express
+// the below packages are required to run this server, and can be installed with npm
+
 import express from 'express';
+import bodyParser from 'body-parser';
+import pdf from 'pdf-parse';
+import crawler from 'crawler-request';
 import multer from 'multer';
 import cors from 'cors';
+//var upload = multer({ dest: 'uploads/' });
+const upload = multer();
+
+
 const app = express();
+const port = 3000;
 app.use(cors())
-const port = 3001;
-
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+app.use(bodyParser.json());
+app.use(bodyParser.raw());
 
 
-app.post('/upload', upload.single('pdfFile'), async (req, res) => {
-  if (!req.file) {
-    return res.status(400).send('No file uploaded.');
-  }
 
-  const pdfData = req.file.buffer;
-  const extractedData = "PARSED DATA";
-  // extractDataFromPdf(pdfData);
+app.post('/multipart-parse', upload.single('file'), (req, res) => {
 
+  const buff = req.file.buffer;
 
-  console.log("in upload");
-  console.log(pdfData);
-  //await extractDataFromPdf(pdfData);
-  res.json({ extractedData });
+  pdf(buff).then((data) => {
+    // PDF text
+    console.log(data.text);
+    res.send({ pdfText: data.text });
+  });
 });
 
-app.post('/processData', express.json(), (req, res) => {
-  const { extractedData } = req.body;
-
-  // Process the extracted data (perform database queries, etc.)
-  console.log('Received extracted data:', extractedData);
-
-  // Send a response to the client
-  res.json({ message: 'Data processed successfully' });
-});
-
+app.post('/process-data', express.json(), (req, res) => {
+    const { extractedData } = req.body;
+  
+    // Process the extracted data (perform database queries, etc.)
+    console.log('Received extracted data:', extractedData);
+  
+    // Send a response to the client
+    res.json({ message: 'Data processed successfully' });
+  });
+  
 
 
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port}`);
 });
