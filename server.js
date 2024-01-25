@@ -4,9 +4,11 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import pdf from 'pdf-parse';
-import crawler from 'crawler-request';
 import multer from 'multer';
 import cors from 'cors';
+import FetchResponse from './helpers/FetchDaignosis.js';
+import FetchMessage from './helpers/FetchMessage.js';
+
 //var upload = multer({ dest: 'uploads/' });
 const upload = multer();
 
@@ -26,19 +28,32 @@ app.post('/multipart-parse', upload.single('file'), (req, res) => {
   pdf(buff).then((data) => {
     // PDF text
     console.log(data.text);
-    res.send({ pdfText: data.text });
+    res.send({ extractedData: data.text });
   });
 });
 
-app.post('/process-data', express.json(), (req, res) => {
+app.post('/process-data', express.json(), async (req, res) => {
     const { extractedData } = req.body;
-  
+    
+    const response = await FetchResponse(extractedData)
     // Process the extracted data (perform database queries, etc.)
     console.log('Received extracted data:', extractedData);
+    console.log(response)
+    // Send a response to the client
+    res.json({ message: response });
+});
+
+app.post('/get-response', express.json(), async(req, res)=>{
+  const { messages } = req.body;
+    console.log(messages)
+    const response = await FetchMessage(messages)
+    // Process the extracted data (perform database queries, etc.)
+    console.log('Received extracted data:', response);
   
     // Send a response to the client
-    res.json({ message: 'Data processed successfully' });
-  });
+    res.json({ message: response });
+
+})
   
 
 
