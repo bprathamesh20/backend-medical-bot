@@ -9,10 +9,12 @@ const openai = new OpenAI({
 
 async function FetchResponse(report) {
   const completion = await openai.chat.completions.create({
-    messages: [{ role: "system", content: `Below is the medical report of the patient please analyse the report and provide useful insights in 10 lines
+    messages: [{ role: "system", content: `Below is the medical report of the patient please analyse the report and provide useful insights in minimum 10 lines
     you have to response like so 
 
-    It appears there may be indications of [Potential Diagnosis]. However, further examination is recommended.
+    It appears there may be indications of [Potential Diagnosis].
+    This appears to caused by [Potential Causes]
+      However, further examination is recommended.
     Do you have any specific concerns or questions?
     
     ${report}` }],

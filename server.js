@@ -27,7 +27,7 @@ app.post('/multipart-parse', upload.single('file'), (req, res) => {
 
   pdf(buff).then((data) => {
     // PDF text
-    console.log(data.text);
+
     res.send({ extractedData: data.text });
   });
 });
@@ -44,9 +44,9 @@ app.post('/process-data', express.json(), async (req, res) => {
 });
 
 app.post('/get-response', express.json(), async(req, res)=>{
-  const { messages } = req.body;
-    console.log(messages)
-    const response = await FetchMessage(messages)
+  const { updatedMessages, pdfData } = req.body;
+    console.log(updatedMessages)
+    const response = await FetchMessage(updatedMessages, pdfData)
     // Process the extracted data (perform database queries, etc.)
     console.log('Received extracted data:', response);
   

@@ -7,10 +7,13 @@ const openai = new OpenAI({
     apiKey: process.env.API_KEY, // Replace with your actual API key
 });
 
-async function FetchMessage(prevMessages) {
+async function FetchMessage(prevMessages, pdfData) {
+    console.log('pdf data',pdfData)
   const completion = await openai.chat.completions.create({
-    messages: prevMessages,
-    model: "ft:gpt-3.5-turbo-1106:personal::8jPTGSKR",
+    messages: [{role: 'system', content: `You are a helpful medical assistant reply briefly to any of the user queries.` }
+      ,{role: 'user', content: `Below is patients report${pdfData}` },
+     ...prevMessages],
+    model: "gpt-3.5-turbo",
   });
 
   const message = completion.choices[0].message.content
