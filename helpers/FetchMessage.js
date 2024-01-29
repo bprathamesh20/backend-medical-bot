@@ -10,8 +10,8 @@ const openai = new OpenAI({
 async function FetchMessage(prevMessages, pdfData) {
     console.log('pdf data',pdfData)
   const completion = await openai.chat.completions.create({
-    messages: [{role: 'system', content: `You are a helpful medical assistant reply briefly to any of the user queries.` }
-      ,{role: 'user', content: `Below is patients report${pdfData}` },
+    messages: [{role: 'system', content: `You are a helpful medical assistant reply in 4-5 sentenses to any of the user queries.` }
+      ,{role: 'user', content: `PatinetReport:"""${pdfData}"""` },
      ...prevMessages],
     model: "gpt-3.5-turbo",
   });
