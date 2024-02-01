@@ -3,7 +3,7 @@
 
 import express from 'express';
 import bodyParser from 'body-parser';
-import pdf from 'pdf-parse';
+import pdf from './pdf-parse/lib/pdf-parse.js';
 import multer from 'multer';
 import cors from 'cors';
 import FetchResponse from './helpers/FetchDaignosis.js';
