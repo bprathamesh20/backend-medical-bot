@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const openai = new OpenAI({
-    apiKey: process.env.API_KEY, // Replace with your actual API key
+    apiKey: process.env.API_KEY, 
 });
 
 async function FetchResponse(report) {
@@ -14,8 +14,7 @@ async function FetchResponse(report) {
 
     patientReport:"""${report}"""
 
-    Respond in the below format in minimum 10 lines
-
+    Respond only in the below format:
     It appears there may be indications of {Potential Diagnosis}.
     This appears to caused by {Potential Causes}
     {Any addtional information}
