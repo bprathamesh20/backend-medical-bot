@@ -36,20 +36,15 @@ app.post('/process-data', express.json(), async (req, res) => {
     const { extractedData } = req.body;
     
     const response = await FetchResponse(extractedData)
-    // Process the extracted data (perform database queries, etc.)
-    console.log('Received extracted data:', extractedData);
-    console.log(response)
+   
     // Send a response to the client
     res.json({ message: response });
 });
 
 app.post('/get-response', express.json(), async(req, res)=>{
   const { updatedMessages, pdfData } = req.body;
-    console.log(updatedMessages)
+    console.log("updated messages",updatedMessages)
     const response = await FetchMessage(updatedMessages, pdfData)
-    // Process the extracted data (perform database queries, etc.)
-    console.log('Received extracted data:', response);
-  
     // Send a response to the client
     res.json({ message: response });
 
